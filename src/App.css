@@ -1,0 +1,75 @@
+.App {
+  --width: 400px;
+  --height: 260px;
+  --puzzle-width: 80px;
+  --puzzle-height: 80px;
+  --moved:0px;
+  display: block;
+  width: var(--width);
+  height: var(--height);
+  background-image: url('./imgs.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  box-shadow: 0px 0px 2px;
+  border-radius: 4px;
+}
+
+.App::before,
+.App::after {
+  position: absolute;
+  content: '';
+  width: inherit;
+  height: inherit;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  clip-path: path('M15,45 A30,30,0,0,1,75,45 A30,30,0,0,1,135,45 Q135,90,75,130 Q15,90,15,45 Z');
+  -webkit-clip-path: path('M15,45 A30,30,0,0,1,75,45 A30,30,0,0,1,135,45 Q135,90,75,130 Q15,90,15,45 Z');
+}
+
+.App::after {
+  transform: translateX(
+   calc((var(--puzzle-width)* 2 * -1) + var(--moved) )
+  );
+}
+
+.App::before {
+  background-color: rgba(0, 0, 0, .5);
+  background-blend-mode: multiply;
+}
+
+.box {
+  width: calc(var(--width) + var(--puzzle-width)*2);
+  height: 30px;
+  margin-top: 30px;
+  border-radius: 30px;
+  border: 1px solid #e5e5e5;
+  background-color: #e5e5e5;
+  box-shadow: 0,0,4px,4px;
+  position: absolute;
+ bottom:-50px;
+  left: calc(var(--puzzle-width)*2*-1);
+}
+
+.box span {
+  display: block;
+  width: var(--puzzle-width);
+  height: inherit;
+  background-color: #fff;
+  border-radius: inherit;
+  position: absolute;
+  cursor: move;
+  transform: translateX(
+  clamp(0px, var(--moved), calc(var(--width) + var(--puzzle-width)))
+  );
+}
+.App .passed::after,.App.passed::before,.passed .box {
+opacity: 0;
+}
+.App:active .box span{
+transition: none;
+}
+.App:active::after {
+transition: none;
+}
